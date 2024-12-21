@@ -23,7 +23,7 @@ class UserController
         return new UserResource($user);
     }
 
-    public function disable(User $user): UserResouce
+    public function disable(User $user): UserResource
     {
         $user->update([
             'enabled' => false,
