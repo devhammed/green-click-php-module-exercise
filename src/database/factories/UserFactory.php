@@ -28,6 +28,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'enabled' => fake()->boolean(),
             'remember_token' => Str::random(10),
         ];
     }
@@ -39,6 +40,26 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the model is enabled.
+     */
+    public function enabled(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'enabled' => true,
+        ]);
+    }
+
+    /**
+     * Indicate that the model is disabled.
+     */
+    public function disabled(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'enabled' => false,
         ]);
     }
 }
