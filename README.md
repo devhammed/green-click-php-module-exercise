@@ -19,6 +19,9 @@ git clone git@github.com:devhammed/green-click-php-module-exercise.git
 # Change directory
 cd green-click-php-module-exercise
 
+# Copy environment variables
+cp src/.env.example src/.env
+
 # Start the app
 docker compose up
 
