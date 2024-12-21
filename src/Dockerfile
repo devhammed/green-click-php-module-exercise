@@ -12,6 +12,7 @@ RUN apk add --no-cache \
     libxpm-dev \
     libzip-dev \
     libxml2-dev \
+    icu-dev \
     bash \
     git \
     curl \
@@ -19,16 +20,24 @@ RUN apk add --no-cache \
 
 RUN docker-php-ext-install pdo_mysql gd zip intl
 
+RUN docker-php-ext-configure pcntl --enable-pcntl \
+  && docker-php-ext-install \
+    pcntl
+
 COPY . .
 
 RUN chown -R www-data:www-data /var/www
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN composer install
+RUN composer install &&  \
+    npm install &&  \
+    npm run build &&  \
+    php artisan key:generate &&  \
+    chown -R www-data:www-data /var/www
 
-RUN npm install
+EXPOSE 59000
 
-EXPOSE 8080
-
-ENTRYPOINT ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+CMD sh -c "php artisan migrate --force --seed && composer run dev"

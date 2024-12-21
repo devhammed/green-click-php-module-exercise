@@ -9,7 +9,29 @@ This is a module-aware Laravel app stub (contained in [./src](./src)), with a `D
 - Docker 27.x
 - MySQL 8.x
 
-### Module Structure
+## Usage
+
+```bash
+# Clone the repository
+git clone git@github.com:devhammed/green-click-php-module-exercise.git
+
+# Change directory
+cd green-click-php-module-exercise
+
+# Start the app
+docker compose up
+
+# Run the migrations
+docker compose exec app sh -c "php artisan migrate"
+
+# Seed the database
+docker compose exec app sh -c "php artisan db:seed"
+
+# Run the tests
+docker compose exec app sh -c "php artisan test"
+```
+
+### Module Structure~~
 
 The only required file in a module is a `routes.php` (as demonstrated in [./src/modules/Demo/routes.php](./src/modules/Demo/routes.php)). Controllers must be based on `Illuminate\Routing\Controller` and namespaces must be correct, per Laravel's conventions.
 
