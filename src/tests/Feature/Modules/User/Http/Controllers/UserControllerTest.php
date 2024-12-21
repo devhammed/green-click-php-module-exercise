@@ -18,7 +18,7 @@ class UserControllerTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertSee('Users');
+        $response->assertSee('All Users');
 
         foreach ($users as $user) {
             $response->assertSee($user->name);
