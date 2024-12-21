@@ -3,11 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use Modules\User\Http\Controllers\UserController;
 
-Route::get('/users', [UserController::class, 'index'])
-    ->name('users.index');
+Route::prefix('users')->name('users.')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('index');
 
-Route::post('/users/enable/{user}', [UserController::class, 'enable'])
-    ->name('users.enable');
+    Route::post('/enable/{user}', [UserController::class, 'enable'])->name('enable');
 
-Route::post('/users/disable/{user}', [UserController::class, 'disable'])
-    ->name('users.disable');
+    Route::post('/disable/{user}', [UserController::class, 'disable'])->name('disable');
+});
+
+
