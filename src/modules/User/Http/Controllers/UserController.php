@@ -3,9 +3,10 @@
 namespace Modules\User\Http\Controllers;
 
 use Modules\User\Models\User;
+use Illuminate\Routing\Controller;
 use Modules\User\Http\Resources\UserResource;
 
-class UserController
+class UserController extends Controller
 {
     public function index(): mixed
     {
