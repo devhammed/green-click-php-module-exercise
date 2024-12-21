@@ -40,4 +40,4 @@ RUN composer install &&  \
 
 EXPOSE 59000
 
-CMD sh -c "php artisan migrate --force --seed && composer run dev"
+ENTRYPOINT ["composer", "run", "dev"]
