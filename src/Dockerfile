@@ -1,89 +1,34 @@
-# Base Stage: Common dependencies and setup
-FROM php:8.2-fpm-alpine AS base
+FROM php:8.3-fpm-alpine
 
-# Install system dependencies
+WORKDIR /var/www
+
 RUN apk add --no-cache \
-        bash \
-        git \
-        curl \
-        libpng-dev \
-        libjpeg-turbo-dev \
-        freetype-dev \
-        oniguruma-dev \
-        postgresql-dev \
-        mysql-client \
-        icu-dev \
-        zip \
-        unzip
+    nodejs \
+    npm \
+    mysql-client \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    libwebp-dev \
+    libxpm-dev \
+    libzip-dev \
+    libxml2-dev \
+    bash \
+    git \
+    curl \
+    unzip
 
-# Install PHP extensions
-RUN docker-php-ext-configure gd \
-    --with-freetype \
-    --with-jpeg && \
-    docker-php-ext-install \
-        pdo_mysql \
-        mbstring \
-        exif \
-        pcntl \
-        intl \
-        bcmath \
-        gd
+RUN docker-php-ext-install pdo_mysql gd zip intl
 
-# Install Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY . .
 
-# Set up working directory
-WORKDIR /var/www/html
+RUN chown -R www-data:www-data /var/www
 
-# Development Stage
-FROM base AS development
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-WORKDIR /var/www/html
-
-# Copy application code for development
-COPY .. ./
-
-# Retain Composer for flexibility in development
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
-# Install Composer dependencies (including dev dependencies)
 RUN composer install
 
-# Install Node.js and NPM
-RUN apk add --no-cache nodejs npm
-
-# Install NPM dependencies
 RUN npm install
 
-# Permission fix for www-data user
-RUN chown -R www-data:www-data /var/www/html
+EXPOSE 8080
 
-# Expose port for PHP-FPM
-EXPOSE 9000
-
-# Start PHP-FPM server
-CMD ["php-fpm"]
-
-# Production Stage
-FROM base AS production
-
-# Copy application code from development stage
-COPY --from=development /var/www/html /var/www/html
-
-# Work in the application directory
-WORKDIR /var/www/html
-
-# Install Composer dependencies (excluding dev dependencies)
-RUN composer install --no-dev --optimize-autoloader
-
-# Install NPM dependencies
-RUN npm ci
-
-# Permission fix for www-data user
-RUN chown -R www-data:www-data /var/www/html
-
-# Expose port for PHP-FPM
-EXPOSE 9000
-
-# Start PHP-FPM server
-CMD ["php-fpm"]
+ENTRYPOINT ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
