@@ -19,7 +19,7 @@
                     <tr>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Name</th>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Email</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Status</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Is Enabled?</th>
                     </tr>
                 </thead>
                 <tbody>
