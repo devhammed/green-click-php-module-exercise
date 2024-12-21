@@ -1,0 +1,61 @@
+services:
+  app:
+    image: green_click_app
+    container_name: green_click_app
+    build:
+      context: ./src
+      target: development # Use "development" stage for development or "production" for production builds.
+    volumes:
+      - ./src:/var/www/html
+      - ./src/storage:/var/www/html/storage
+      - ./src/bootstrap/cache:/var/www/html/bootstrap/cache
+    ports:
+      - "9000:9000"
+    environment:
+      APP_NAME: "Green Click"
+      APP_ENV: local
+      APP_TIMEZONE: UTC
+      APP_DEBUG: true
+      APP_KEY: "base64:lc+OjpBujxDeIC/eORynvRGr3i6pBuobE2gzuDI+wRs="
+      APP_LOCALE: en
+      APP_FALLBACK_LOCALE: en
+      APP_FAKER_LOCALE: en_US
+      APP_MAINTENANCE_DRIVER: file
+      APP_MAINTENANCE_STORE: database
+      BCRYPT_ROUNDS: 12
+      PHP_CLI_SERVER_WORKERS: 4
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 33066
+      DB_DATABASE: laravel
+      DB_USERNAME: laravel
+      DB_PASSWORD: password
+    depends_on:
+      - mysql
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: green_click_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  mysql:
+    image: mysql:8.0
+    container_name: green_click_mysql
+    ports:
+      - "33066:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - green_click_mysql_data:/var/lib/mysql
+
+volumes:
+  green_click_mysql_data: {}

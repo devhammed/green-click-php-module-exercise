@@ -2,6 +2,13 @@
 
 This is a module-aware Laravel app stub (contained in [./src](./src)), with a `Demo` module that adds a `GET /demo` endpoint. The Laravel app is a proof-of-concept host that is capable of loading modules (on startup) that extend its functionality, without direct references from the host.
 
+## Technologies
+
+- PHP 8.x
+- Laravel 11.x
+- Docker 27.x
+- MySQL 8.x
+
 ### Module Structure
 
 The only required file in a module is a `routes.php` (as demonstrated in [./src/modules/Demo/routes.php](./src/modules/Demo/routes.php)). Controllers must be based on `Illuminate\Routing\Controller` and namespaces must be correct, per Laravel's conventions.
