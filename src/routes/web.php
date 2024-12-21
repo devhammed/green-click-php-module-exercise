@@ -15,5 +15,6 @@ foreach ($modules as $module) {
     }
 }
 
-Route::view('/', 'welcome')
-    ->name('home');
+Route::get('/', function() {
+    return view('welcome');
+});
