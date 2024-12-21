@@ -8,6 +8,6 @@ class UserController extends Controller
 {
     public function index()
     {
-        return 'Hello from UserController@index';
+        return view('users');
     }
 }
