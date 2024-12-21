@@ -8,6 +8,7 @@ This is a module-aware Laravel app stub (contained in [./src](./src)), with a `D
 - Laravel 11.x
 - Docker 27.x
 - MySQL 8.x
+- AlpineJS 3.x
 
 ## Usage
 

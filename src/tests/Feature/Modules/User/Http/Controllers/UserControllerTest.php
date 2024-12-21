@@ -32,7 +32,7 @@ class UserControllerTest extends TestCase
         $user = User::factory()->disabled()->create();
 
         // Act: Make the request to enable the user
-        $response = $this->post("/users/{$user->id}/enable");
+        $response = $this->post("/users/enable/{$user->id}");
 
         // Assert: Check if the response is successful and contains the expected keys and values in the JSON response
         $response->assertOk();
@@ -58,7 +58,7 @@ class UserControllerTest extends TestCase
         $user = User::factory()->enabled()->create();
 
         // Act: Make the request to disable the user
-        $response = $this->post("/users/{$user->id}/disable");
+        $response = $this->post("/users/disable/{$user->id}");
 
         // Assert: Check if the response is successful and contains the expected keys and values in the JSON response
         $response->assertOk();
@@ -80,7 +80,7 @@ class UserControllerTest extends TestCase
 
     public function test_it_returns_error_if_user_not_found_when_enabling()
     {
-        $response = $this->post('/users/9999/enable'); // Non-existent user ID
+        $response = $this->post('/users/enable/9999'); // Non-existent user ID
 
         // Assert: Check if the response returns a 404 status for not found
         $response->assertNotFound();
@@ -88,7 +88,7 @@ class UserControllerTest extends TestCase
 
     public function test_it_returns_error_if_user_not_found_when_disabling()
     {
-        $response = $this->post('/users/9999/disable'); // Non-existent user ID
+        $response = $this->post('/users/disable/9999'); // Non-existent user ID
 
         // Assert: Check if the response returns a 404 status for not found
         $response->assertNotFound();

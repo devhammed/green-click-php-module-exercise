@@ -42,7 +42,7 @@
 
                                                 loading = true;
                                                 try {
-                                                    await axios.post(`/users/{{ $user->getKey() }}/${checked ? 'enable' : 'disable'}`);
+                                                    await axios.post(`/users/${checked ? 'enable' : 'disable'}/{{ $user->getKey() }}`);
                                                 } catch (error) {
                                                     alert('An error occurred: ' + (error.response?.data?.message || error.message));
                                                     $event.target.checked = ! checked;
