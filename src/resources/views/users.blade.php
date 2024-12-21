@@ -31,13 +31,12 @@
                                 x-data="{ loading: false }"
                             >
                                 <div class="flex items-center justify-start gap-2">
-                                    <!-- Accessible Input Checkbox -->
-                                    <label class="relative inline-flex items-center cursor-pointer">
+                                    <label for="user-{{ $user->getKey() }}-toggle">
                                         <input
                                             type="checkbox"
+                                            id="user-{{ $user->getKey() }}-toggle"
                                             :checked="@js($user->enabled)"
                                             :disabled="loading"
-                                            class="sr-only peer"
                                             @change="async () => {
                                                 const checked = $event.target.checked;
 
@@ -51,14 +50,8 @@
                                                     loading = false;
                                                 }
                                             }"
-                                        >
-                                        <!-- Custom Switch -->
-                                        <span
-                                            class="w-10 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full transition-colors peer-checked:bg-green-500"
-                                        ></span>
-                                        <span
-                                            class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transform transition-transform peer-checked:translate-x-4"
-                                        ></span>
+                                        />
+                                        <span class="sr-only">Toggle User Status</span>
                                     </label>
                                     <!-- Loading Spinner -->
                                     <svg
@@ -91,6 +84,5 @@
             </table>
         </div>
     </div>
-
 </body>
 </html>
