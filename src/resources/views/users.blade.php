@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,6 @@
     ])
 </head>
 <body class="bg-gray-100 p-6">
-
     <div class="container mx-auto">
         <h1 class="text-2xl font-bold mb-4">All Users</h1>
         <div class="overflow-x-auto">
@@ -27,20 +26,19 @@
                         <tr class="border-b border-gray-200">
                             <td class="px-6 py-3 text-sm text-gray-800">{{ $user->name }}</td>
                             <td class="px-6 py-3 text-sm text-gray-800">{{ $user->email }}</td>
-                            <td class="px-6 py-3 text-sm"
-                                x-data="{ loading: false }"
-                            >
+                            <td class="px-6 py-3 text-sm" x-data="{ loading: false }">
                                 <div class="flex items-center justify-start gap-2">
                                     <label for="user-{{ $user->getKey() }}-toggle">
                                         <input
                                             type="checkbox"
                                             id="user-{{ $user->getKey() }}-toggle"
-                                            :checked="@js($user->enabled)"
-                                            :disabled="loading"
-                                            @change="async () => {
+                                            x-bind:checked="@js($user->enabled)"
+                                            x-bind:disabled="loading"
+                                            x-on:change="async () => {
                                                 const checked = $event.target.checked;
 
                                                 loading = true;
+
                                                 try {
                                                     await axios.post(`/users/${checked ? 'enable' : 'disable'}/{{ $user->getKey() }}`);
                                                 } catch (error) {
@@ -57,7 +55,7 @@
                                     <svg
                                         x-show="loading"
                                         x-cloak
-                                        class="animate-spin h-5 w-5 text-gray-500"
+                                        class="animate-spin size-5 text-gray-500"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
                                         viewBox="0 0 24 24"
